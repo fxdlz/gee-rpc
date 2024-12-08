@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	geerpc "gee-rpc"
 	"log"
 	"net"
@@ -50,7 +51,9 @@ func main() {
 				Num1: i,
 				Num2: i,
 			}
-			if err := cl.Call("Foo.Sum", args, &reply); err != nil {
+			ctx, cancel := context.WithTimeout(context.Background(), time.Second*1)
+			defer cancel()
+			if err := cl.Call(ctx, "Foo.Sum", args, &reply); err != nil {
 				log.Fatal("call Foo.Sum error:", err)
 			}
 			log.Printf("%d + %d = %d", args.Num1, args.Num2, reply)
