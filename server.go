@@ -43,7 +43,7 @@ var DefaultServer = NewServer()
 func (server *Server) Register(svc interface{}) error {
 	s := newService(svc)
 	if _, loaded := server.serviceMap.LoadOrStore(s.name, s); loaded {
-		return errors.New("rpc: service already defined: " + s.name)
+		log.Println("rpc: service already defined: " + s.name)
 	}
 	return nil
 }
